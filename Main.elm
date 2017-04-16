@@ -71,9 +71,15 @@ update msg model =
 
 itemItem : String -> Html Msg
 itemItem item =
-    li []
+    li [ style [("color", "white")]]
         [ text item
-        , button [ onClick (RemoveItem item) ] [ text "Remove" ]
+        , button [ style [("background-color", "lightgrey")
+                          , ("color", "navy")
+                          , ("font-size", "8px")
+                          , ("border-radius", "5px")
+                          , ("margin", "0 0 0 5px")]
+                          , onClick (RemoveItem item) ]
+                  [ text "Remove" ]
         ]
 
 
@@ -88,21 +94,62 @@ itemList items =
 
 view : Model -> Html Msg
 view model =
-  div []
+  div [ style [("margin", "2% auto")
+                , ("display", "flex")
+                , ("flex-direction", "row")
+                , ("align-items", "flex-start")
+                , ("justify-content", "center")
+                , ("width", "85%")
+                , ("color", "white")]]
     [ div []
-        [ input [ type_ "text", onInput UpdateText, value model.item ] []
-        , button [ onClick AddItem ] [ text "Add Item" ]
+        [ div []
+            [ h1 [ style [("color", "white")]]
+                [ text "Today's Calories:" ]
+            ]
         , div []
-          [ itemList model.items ]
+            [div []
+              [ h3 [ style [("color", "white")]]
+                  [ text (toString model.calories) ]
+              ]
+              , input [ placeholder "Amount of Calories", onInput SetCalories ] []
+              , div [] []
+              , button [ style [("background-color", "grey")
+                                , ("color", "white")
+                                , ("margin", "2px")
+                                , ("border-radius", "5px")]
+                                , onClick Increment ]
+                        [ text "Food" ]
+              , button [ style [("background-color", "grey")
+                                , ("color", "white")
+                                , ("margin", "2px")
+                                , ("border-radius", "5px")]
+                                , onClick Decrement ]
+                        [ text "Exercise" ]
+              , button [ style [("background-color", "grey")
+                                , ("color", "white")
+                                , ("margin", "2px")
+                                , ("border-radius", "5px")]
+                                ,onClick Reset ]
+                                [ text "Clear" ]
+            ]
         ]
-    ,  div []
-        [ text "Today's Calories:" ]
-    ,   div []
-        [ div [] [ text (toString model.calories) ]
-        , input [ placeholder "Amount of Calories", onInput SetCalories ] []
-        , div [] []
-        , button [ onClick Increment ] [ text "Food" ]
-        , button [ onClick Decrement ] [ text "Exercise" ]
-        , button [ onClick Reset ] [ text "Clear" ]
+    , div [ style [("margin", "0 auto")]]
+        [ div []
+            [ h1 [ style [("color", "white")]]
+                [ text "Today's Food and Exercise:" ]
+            ]
+        , div []
+            [div []
+                [ input [ type_ "text", onInput UpdateText, value model.item, placeholder "Food or Exercise" ] []
+                , button [ style [("background-color", "grey")
+                                  , ("color", "white")
+                                  , ("margin", "2px")
+                                  , ("border-radius", "5px")]
+                                  , onClick AddItem ]
+                          [ text "Add Item" ]
+                , div []
+                  [ itemList model.items ]
+                ]
+                ]
         ]
     ]
